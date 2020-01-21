@@ -1,0 +1,30 @@
+name: 'frontend'
+
+type: 'nodejs:10'
+
+disk: 256
+
+hooks:
+  build: |
+    npm run build
+  deploy: |
+    set -e
+    ./build-config.sh
+
+mounts:
+    'static/run':
+        source: local
+        source_path: run
+
+web:
+  # commands:
+  #   start: "npm run start"
+  locations:
+    "/":
+      root: "dist"
+      index: ['index.html']
+      allow: true
+    "/run/":
+      root: "static/run"
+      index: ['index.html']
+      allow: true        
